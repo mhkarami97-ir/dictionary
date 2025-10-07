@@ -1,6 +1,0 @@
-**/*.map
-**/*.min.css
-**/*.min.js
-.jekyll-cache/
-.mypy_cache/
-_scripts/localized_scripts.js.liquid
