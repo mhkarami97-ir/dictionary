@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="{{ site.active_lang }}">
+  <head>
+    <!-- Meta settings -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+      name="description"
+      content="{{ site.data[site.active_lang].strings.site_description }}"
+    >
+
+    <!-- Favicon -->
+    <link
+      rel="shortcut icon"
+      href="/assets/img/brand/symbol/logo.png"
+      type="image/x-icon"
+    >
+
+    <!-- CSS Imports -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Analytics -->
+    <script
+      data-goatcounter="https://levxyca.goatcounter.com/count"
+      async
+      src="//gc.zgo.at/count.js"
+    ></script>
+
+    <!-- Light/Dark/System Theme -->
+    <script src="{{ '/assets/js/theme.js' | relative_url }}"></script>
+
+    <!-- Progressive Web App Manifest -->
+    <link rel="manifest" href="diciotech.webmanifest">
+    <link rel="apple-touch-icon" href="/assets/img/brand/symbol/logo.png">
+  </head>
+
+  <body>
+    <header class="header">
+      <h1 class="header__title">
+        <img
+          src="/assets/img/brand/symbol/colored.png"
+          width="480"
+          height="148"
+          alt="Diciotech"
+        >
+      </h1>
+      <h2 class="header__subtitle">
+        {{ site.data[site.active_lang].strings.site_description }} <br>
+      </h2>
+
+      <button
+        id="change-theme-button"
+        class="button-change-theme"
+        title="{{ site.data[site.active_lang].strings.change_theme }}"
+      >
+        <i class="ph ph-desktop"></i>
+        <i class="ph ph-moon"></i>
+        <i class="ph ph-sun"></i>
+      </button>
+    </header>
+    <main class="main">
+      <div class="search">
+        <div class="searchbar">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="searchbar__icon"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
+            />
+          </svg>
+          <input
+            id="search-input"
+            type="text"
+            name="search-input"
+            placeholder="{{ site.data[site.active_lang].strings.search_placeholder }}"
+            class="searchbar__input"
+          >
+        </div>
+        <div class="filter">
+          <label for="tags-filter" class="filter_label">{{ site.data[site.active_lang].strings.filter_by_category }}</label>
+          <select id="tags-filter">
+            <option value="{{ site.data[site.active_lang].strings.all }}" selected>{{ site.data[site.active_lang].strings.all }}</option>
+          </select>
+        </div>
+      </div>
+      <section class="cards" id="cards"></section>
+      <button class="scroll-button" id="scrollButton" aria-label="{{ site.data[site.active_lang].strings.scroll_button }}">
+        <i class="scroll-button__icon ph ph-caret-up" id="scrollIcon"></i>
+      </button>
+    </main>
+    <script
+      src="{% if site.active_lang != site.default_lang %}{{ '/assets/js/localized_scripts.js' | prepend: site.active_lang | relative_url }}{% else %}{{ '/assets/js/localized_scripts.js' | relative_url }}{% endif %}"
+      type="module"
+    ></script>
+    <script src="{{ '/assets/js/pwa.js' | relative_url }}"></script>
+    <script src="{{ '/assets/js/scrollButton.js' | relative_url }}"></script>
+  </body>
+</html>
