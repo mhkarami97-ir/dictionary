@@ -13,9 +13,9 @@ const noResultsAlt = '{{ site.data[site.active_lang].strings.no_results.alt }}';
 const noResultsText = `{{ site.data[site.active_lang].strings.no_results.text }}`;
 
 {% if site.active_lang == site.default_lang -%}
-  const jsonPath = '{{ "https://dictionary.mhkarami97.ir/assets/data/cards.json" | relative_url }}';
+  const jsonPath = '{{ "/assets/data/cards.json" | relative_url }}';
 {%- else -%}
-  const jsonPath = '{{ "https://dictionary.mhkarami97.ir/assets/data/cards.json" | prepend: site.active_lang | prepend: "/" | relative_url }}';
+  const jsonPath = '{{ "/assets/data/cards.json" | prepend: site.active_lang | prepend: "/" | relative_url }}';
 {%- endif %}
 
 document.querySelector('#search-input').addEventListener('input', searchCards);
