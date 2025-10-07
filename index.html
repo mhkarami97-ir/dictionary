@@ -47,12 +47,14 @@
         }
 
         .max-w-prose,
+        .mt-4,
         #glossary-page-terms-index-static-sidebar {
             text-align: right;
         }
 
         footer,
-        #glossary-page-letter-grid {
+        #glossary-page-letter-grid,
+        nav .flex button {
             display: none;
         }
     </style>
@@ -72,21 +74,68 @@
                 <p>لیست لغات کاربردی در زمینه های مختلف
                 </p>
             </div>
+            <div id="glossary-page-tags">
+                تگ‌ها:
+                <dl>
+                    <div data-id="زمین_شناسی">
+                        <dt>زمین_شناسی</dt>
+                    </div>
+                    <div data-id="تاریخی">
+                        <dt>تاریخی</dt>
+                    </div>
+                </dl>
+            </div>
             <article id="glossary-page-items">
                 <dl>
+                    <!--  -->
                     <div data-id="1">
                         <dt>
                             <dfn id="1">
-                                <a href="#تست">
-                                    <span>تست</span>
+                                <a href="#کامبرین">
+                                    <span>کامبرین</span>
                                 </a>
                             </dfn>
                         </dt>
                         <dd class="tags">
-                            <button type="button">تگ</button>
+                            <button type="button">زمین_شناسی</button>
                         </dd>
-                        <dd>توضیح</dd>
+                        <dd>
+                            اولین دوره از ادوار پنجگانه دوران اول زمین شناسی
+                        </dd>
                     </div>
+                    <!--  -->
+                    <div data-id="2">
+                        <dt>
+                            <dfn id="2">
+                                <a href="#تکتونیک">
+                                    <span>تکتونیک</span>
+                                </a>
+                            </dfn>
+                        </dt>
+                        <dd class="tags">
+                            <button type="button">زمین_شناسی</button>
+                        </dd>
+                        <dd>
+                            تغییرشکل پوسته زمین بر اثر تنش ها و کرنش های وارده
+                        </dd>
+                    </div>
+                    <!--  -->
+                    <div data-id="3">
+                        <dt>
+                            <dfn id="3">
+                                <a href="#دیاکو">
+                                    <span>دیاکو</span>
+                                </a>
+                            </dfn>
+                        </dt>
+                        <dd class="tags">
+                            <button type="button">تاریخی</button>
+                        </dd>
+                        <dd>
+                            نام نخستین پادشاه ایران از سلسله ی ماد
+                        </dd>
+                    </div>
+                    <!--  -->
                 </dl>
             </article>
         </main>
