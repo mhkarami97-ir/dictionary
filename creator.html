@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="fa">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="apple-touch-icon" href="/favicon.png">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="mask-icon" href="/favicon.png" color="#5bbad5">
+    <link rel="shortcut icon" href="/favicon.png">
+    <title>سازنده</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #fff;
+            --muted: #6b7280;
+            --accent: #2563eb
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'Tahoma', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            line-height: 1.4;
+            margin: 0;
+            background: linear-gradient(180deg, #071023 0%, #071a2b 100%);
+            color: #0b1220;
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 32px;
+            direction: rtl;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 980px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(2, 6, 23, .45)
+        }
+
+        header {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            justify-content: space-between
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 18px
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 18px;
+            margin-top: 18px
+        }
+
+        @media (max-width:880px) {
+            form {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .panel {
+            background: #fafafa;
+            border-radius: 10px;
+            padding: 14px;
+            border: 1px solid #eef2ff
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 8px;
+            color: var(--muted)
+        }
+
+        input[type=text],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #e6e9ee;
+            font-size: 14px;
+            font-family: 'Tahoma';
+        }
+
+        button {
+            font-family: 'Tahoma';
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical
+        }
+
+        .tags-input {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 6px;
+            border-radius: 8px;
+            border: 1px dashed #e2e8f0;
+            background: #fff
+        }
+
+        .tag {
+            background: #eef2ff;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 13px
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px
+        }
+
+        button {
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 0;
+            font-weight: 600;
+            cursor: pointer
+        }
+
+        .primary {
+            background: var(--accent);
+            color: white
+        }
+
+        .ghost {
+            background: transparent;
+            border: 1px solid #e2e8f0
+        }
+
+        .output {
+            margin-top: 18px
+        }
+
+        .preview {
+            padding: 12px;
+            border-radius: 10px;
+            background: linear-gradient(180deg, #fff, #fbfdff);
+            border: 1px solid #eef2ff
+        }
+
+        pre {
+            white-space: pre-wrap;
+            background: #0b1220;
+            color: #e6eef8;
+            padding: 12px;
+            border-radius: 8px;
+            overflow: auto
+        }
+
+        .generated {
+            margin-top: 14px
+        }
+
+        .meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap
+        }
+
+        .muted {
+            color: var(--muted)
+        }
+
+        #tagsInput {
+            display: none;
+        }
+
+        #tagsInput.active {
+            display: flex;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" role="main">
+        <form id="generatorForm" novalidate>
+            <section class="panel">
+                <label for="title">عنوان</label>
+                <input id="title" name="title" type="text" placeholder="کلمه شما" required />
+
+                <label style="margin-top:12px">تگ‌ها (اینتر بزنید)</label>
+                <input id="tagHidden" type="text" placeholder="لیست تگ‌ها"
+                    style="padding:8px;border-radius:8px;border:1px solid #e6e9ee;width:100%" />
+                <div id="tagsInput" class="tags-input" tabindex="0" aria-label="tags input"></div>
+
+                <label style="margin-top:12px">توضیح</label>
+                <textarea id="description" name="description" placeholder="توضیح کلمه" required></textarea>
+
+                <div class="controls" style="justify-content:flex-end">
+                    <button type="button" id="createBtn" class="primary">ایجاد</button>
+                    <button type="button" id="downloadBtn" class="ghost">دانلود</button>
+                    <button type="button" id="copyBtn" class="ghost">کپی</button>
+                </div>
+            </section>
+            <div class="generated">
+                <div class="muted">خروجی</div>
+                <pre id="resultHtml" aria-label="generated html" style="direction: ltr;">—</pre>
+            </div>
+            </aside>
+        </form>
+    </div>
+
+    <script>
+        class CardGenerator {
+            constructor(root) {
+                this.root = root;
+                this.tags = [];
+                this.previewEl = document.getElementById('preview');
+                this.resultEl = document.getElementById('resultHtml');
+                this.titleInput = document.getElementById('title');
+                this.descInput = document.getElementById('description');
+                this.createBtn = document.getElementById('createBtn');
+                this.copyBtn = document.getElementById('copyBtn');
+                this.downloadBtn = document.getElementById('downloadBtn');
+                this.tagHidden = document.getElementById('tagHidden');
+                this.tagsContainer = document.getElementById('tagsInput');
+                this._attach();
+            }
+
+            _attach() {
+                var self = this;
+                this.createBtn.addEventListener('click', function () { self.create(); });
+                this.copyBtn.addEventListener('click', function () { self.copyToClipboard(); });
+                this.downloadBtn.addEventListener('click', function () { self.downloadFile(); });
+                this.tagHidden.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ',') {
+                        e.preventDefault();
+                        var v = this.value.trim();
+                        if (v) {
+                            self.addTag(v);
+                            this.value = '';
+                            self.tagsContainer.classList.add('active');
+                        }
+                    }
+                });
+
+                this.tagsContainer.addEventListener('click', function () { self.tagHidden.focus(); });
+            }
+
+            addTag(value) {
+                var tag = value.trim().replace(/\s+/g, '_');
+                if (!tag) return;
+                if (this.tags.indexOf(tag) !== -1) return;
+                this.tags.push(tag);
+                this._renderTags();
+            }
+
+            _renderTags() {
+                var self = this;
+                this.tagsContainer.innerHTML = '';
+                this.tags.forEach(function (t, idx) {
+                    var span = document.createElement('span');
+                    span.className = 'tag';
+                    span.textContent = t;
+                    span.title = 'برای حذف کلیک کنید';
+                    span.style.cursor = 'pointer';
+                    span.addEventListener('click', function () { self.removeTag(idx); });
+                    self.tagsContainer.appendChild(span);
+                });
+            }
+
+            removeTag(index) {
+                this.tags.splice(index, 1);
+                this._renderTags();
+            }
+
+            create() {
+                var title = this.titleInput.value.trim();
+                var description = this.descInput.value.trim();
+                if (!title || !description) {
+                    this.previewEl.textContent = 'Title and description are required.';
+                    return;
+                }
+
+                var id = this._guid();
+                var isRTL = this._looksRTL(title + ' ' + description);
+
+                var html = this._buildHtml({ id: id, title: title, tags: this.tags.slice(0), description: description, rtl: isRTL });
+
+                this.resultEl.textContent = html.source;
+            }
+
+            _buildHtml({ id, title, tags, description, rtl }) {
+                var dirAttr = rtl ? ' dir="rtl"' : '';
+                var escapedTitle = this._escapeHtml(title);
+                var anchorHref = '#' + this._escapeAttr(title);
+                var tagButtons = tags.map(function (t) { return '<button type="button">' + CardGenerator.prototype._escapeHtml(t) + '</button>'; }).join('\n');
+
+                var rendered = '<div data-id="' + id + '\">\n' +
+                    '  <dt>\n' +
+                    '    <dfn id="' + id + '">\n' +
+                    '      <a href="' + escapedTitle + '">\n' +
+                    '        <span>' + escapedTitle + '</span>\n' +
+                    '      </a>\n' +
+                    '    </dfn>\n' +
+                    '  </dt>\n' +
+                    '  <dd class="tags">\n' +
+                    '    ' + tagButtons + '\n' +
+                    '  </dd>\n' +
+                    '  <dd' + (rtl ? ' style="text-align:right"' : '') + '>\n' +
+                    '    ' + this._escapeHtml(description) + '\n' +
+                    '  </dd>\n' +
+                    '</div>\n' +
+                    '<!--  -->';
+
+                var source = rendered; // same in this generator
+                return { rendered: rendered, source: source };
+            }
+
+            copyToClipboard() {
+                var text = this.resultEl.textContent || '';
+                if (!text) return;
+                navigator.clipboard.writeText(text).then(function () {
+
+                }, function () {
+                    alert('Copy failed');
+                });
+            }
+
+            downloadFile() {
+                var text = this.resultEl.textContent || '';
+                if (!text) return alert('Nothing to download');
+                var blob = new Blob([text], { type: 'text/html;charset=utf-8' });
+                var url = URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'card-' + Date.now() + '.html';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(url);
+            }
+
+            _guid() {
+                var s4 = function () { return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1); };
+                return (s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4());
+            }
+
+            _escapeHtml(str) {
+                return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            }
+
+            _escapeAttr(str) {
+                return encodeURIComponent(String(str).replace(/\s+/g, '-'));
+            }
+
+            _looksRTL(text) {
+                return /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/.test(text);
+            }
+        }
+
+        var generator = new CardGenerator(document.body);
+    </script>
+</body>
+
+</html>
