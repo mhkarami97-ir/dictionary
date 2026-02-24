@@ -1,0 +1,96 @@
+{
+  "id": "/",
+  "scope": "/",
+  "name": "Dictionary",
+  "short_name": "واژه‌نامه",
+  "description": "مجموعه واژه‌های کاربردی شامل معانی و توضیحات مفاهیم مختلف",
+  "start_url": "/",
+  "display": "fullscreen",
+  "background_color": "#0f1730",
+  "theme_color": "#7c5cff",
+  "orientation": "portrait-primary",
+  "lang": "fa",
+  "dir": "rtl",
+  "display_override": ["fullscreen", "standalone", "window-controls-overlay"],
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "icons": [
+    {
+      "src": "/assets/favicon.png",
+      "sizes": "48x48",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/favicon.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/favicon.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/favicon.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["utilities", "productivity", "tools"],
+  "screenshots": [
+    {
+      "src": "/assets/favicon.png",
+      "sizes": "576x1280",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "صفحه اصلی"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "دیکشنری",
+      "short_name": "واژه‌نامه",
+      "description": "دسترسی سریع به واژه‌های کاربردی",
+      "url": "/",
+      "icons": [
+        {
+          "src": "/assets/favicon.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "share_target": {
+    "action": "/",
+    "method": "GET",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
+}
